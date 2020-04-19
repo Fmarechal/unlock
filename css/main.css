@@ -11,7 +11,30 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
+html {
+  color: #222;
+  font-size: 1em;
+  line-height: 1.4;
+}
 
+.scene{
+    overflow-x: auto;
+    white-space: nowrap;
+    box-sizing: border-box; 
+}
+
+.scene > .flip-card:hover{
+    box-shadow: 0 0 3px orange; 
+    border:1px solid rgb(255,165,0, 0.8); 
+}
+
+.defausse {
+  height: 150px;
+  min-width: 10px;
+  display:inline-block;
+  white-space: nowrap;
+  background-color: #51454D;
+}
 
 .unlock-title {
     position: absolute;
@@ -20,6 +43,7 @@
 
     transform: translate(-50%, -50%);
     opacity: 0.2;
+    z-index: -1;
     width: 80%;
     pointer-events: none;
 }
@@ -43,7 +67,15 @@ audio {
 }
 
 .flip-card.zoomed{
-    transform: scale(2);
+  width: 172px!important;
+  height: 300px!important;
+  transform: scale(0.8);
+}
+
+.flip-card.zoomed.zoomed-max{
+  object-fit: cover;
+ width: 227px!important;
+ height: 400px!important;
 }
 
 .flip-card:hover { 
@@ -82,32 +114,33 @@ audio {
 }*/
 
 .card-icon {
+ /* flex-shrink: 3;*/
   display:inline-block; 
   max-width:100%;
   max-height:100%;
 }
 
-.magnify-button{
-}
-
-.eye-button {
-/*  top: 20px;
-  right: 17px;*/
-}
-
-.rotate-button {
-/*  top: 20px;
-  right: 87px;*/
+.bin{
+  align-self: flex-start;
 }
 
 .button-container {
+
+  display:none;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: space-around;
   white-space: nowrap;
-  height:15%;
+  height:100%;
   max-width: 100%;
-  display:inline-block;  
+/*  display:inline-block;  */
   opacity:0;
   position:absolute;  
   z-index: 9;
+}
+
+.button-container.buttons-visible{
+  display: flex;
 }
 
 .flip-card-front, .flip-card-back {
@@ -138,6 +171,7 @@ background: linear-gradient(147deg, rgba(2,0,36,1) 0%, rgba(121,69,9,0.496533647
   right: 0;
   overflow: auto;
   z-index: -1;
+  padding-top: 167px;
 }
 
 .attribution-block{
@@ -149,33 +183,11 @@ background: linear-gradient(147deg, rgba(2,0,36,1) 0%, rgba(121,69,9,0.496533647
 }
 
 .playground.lowered{
-  margin-top: 167px;
+  /*décommenter ceci pour abaisser le tapis de jeu qunad le drawer s'ouvre par le haut*/
+  /*margin-top: 167px;*/  
 }
 
-html {
-  color: #222;
-  font-size: 1em;
-  line-height: 1.4;
-}
 
-.scene{
-    /*width: 30em;*/
-    overflow-x: auto;
-    white-space: nowrap;
-    box-sizing: border-box; 
-/*  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  overflow: auto;
-  background: LightPink;*/
-}
-
-.scene > .flip-card:hover{
-    box-shadow: 0 0 3px orange; 
-    border:1px solid rgb(255,165,0, 0.8); 
-}
 
 .drawer-hamburger{
   margin-top: 10px;

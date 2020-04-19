@@ -33,9 +33,9 @@ $(document).ready(function(){
 	});
 
 
-	window.setTimeout(function() {
+	/*window.setTimeout(function() {
   	alert("Hello toi :-) \n		\n 		Petit mode d'emploi rapide :\n		Pour amener une carte sur la table de jeu, clique dessus.\n\n		Ensuite, passe ta souris sur le dessus de la carte et tu verras 3 icônes :\n		\n		- mettre la carte en paysage\n		- retourner la carte\n		- agrandir la carte\n		\n		J'arrive un peu plus tard 😉")
-  }, 3000);
+  }, 3000);*/
 	
 
 /*	$(".scene").droppable({
@@ -81,11 +81,17 @@ function showRotateButton(elt){ // @TODO
 
 }
 
+// elt = .flip-card
 function putCardOnPlayground(elt){
 	if(elt.makeDraggable != false){
-		$('.playground').prepend(elt);
-		jQuery(elt).draggable();
-		jQuery(elt).css('margin', '20px');
+		$('.playground').prepend(elt);		
+		jelt = jQuery(elt)
+		jelt.children('.button-container').addClass("buttons-visible");
+		jelt.draggable();
+		jelt.css('margin', '20px');
+/*		jelt.css('height', '20px');
+		jelt.css('width', '20px');*/
+		jelt.addClass('zoomed');
 	}
 	elt.makeDraggable = false;
 }
@@ -96,7 +102,7 @@ function displayCards(cardObjectsArray){
 		$('.scene').prepend(`
 			<div class='flip-card cardNr${i}' onclick='putCardOnPlayground(this)'>
 				<div class='button-container'>
-					<img src='img/icons8-rotate-64.png' class='card-icon rotate-button'>
+					<img src='img/bin.png' class='card-icon bin'><img src='img/pivot-icon.png' class='card-icon rotate-button'>
 					<img src='img/eye.png' class='card-icon eye-button'>
 					<img src='img/magnifier.png' class='card-icon magnify-button'>
 				</div>
@@ -137,6 +143,7 @@ function displayCards(cardObjectsArray){
 		for (let i = 0; i < c.length; i++){
 			c[i].classList.add('clicked');
 		}	
+		
 		window.setTimeout(function(){
 			$('.button-container').on('mouseover', function(){
 				$(this).css('opacity', '1');
@@ -154,7 +161,17 @@ function displayCards(cardObjectsArray){
 					$(this).parent().siblings(".flip-card-inner").toggleClass('rotated');
 				});
 				$('.magnify-button').click(function(){
-					$(this).parent().parent().toggleClass('zoomed');
+					$(this).parent().parent().toggleClass('zoomed-max');
+				});
+				$('.bin').click(function(){
+					$(this).parent().removeClass('buttons-visible');
+					$(this).parent().makeDraggable = null; /*@TODO : est censé permettre la fonction putOnPlayground mais ne change rien
+					*/
+					let t = $(this).parent().parent()// t = flip-card
+					$('.scene').prepend(t);					
+					t.draggable('destroy');
+					t.removeClass('zoomed');					
+					t.css('margin', '0');
 				});
 			});
 		let backImg = $(`.cardBack${i} img`);
@@ -169,6 +186,8 @@ function displayCards(cardObjectsArray){
 
 		/*$(`.cardBack${i} img`).attr("src", `${cardObjectsArray[i].pile}`);*/
 		$(`.cardFront${i} img`).attr("src", `${cardObjectsArray[i].face}`);
+
+		$('flip-card').resizable();
 
 		/*let c = document.getElementsByClassName("flip-card-inner");
 		for (let i = 0; i < c.length; i++){c[i].classList.add('clicked');}*/

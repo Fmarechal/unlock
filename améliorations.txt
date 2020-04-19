@@ -1,6 +1,17 @@
 btn pr dismisser une carte
-cartes + grandes et + claires (meilleure définition)
+=> but : groupe des 3 icones au milieu de la carte.
+Régler flex-start du bin
+
+Ensuite, mettre une icone poubelle au sommet des cartes, qui va renvoyer la carte dans le drawyer mais avec un overlay de couleur. => regarder le @TODO
+
+V cartes + grandes 
+
+cartes + claires (meilleure définition)
+
 avant plan quand on clique sur une carte
-enlever transparence des cartes (on  voir unlcock au travers)
+
+V enlever transparence des cartes (on  voir unlcock au travers)
+
 faire apparaitre les cartes cliquées au milieu du viewport
-changer l'icone oeil pour une icone d'arrière de carte (motif)
+
+V changer l'icone oeil pour une icone d'arrière de carte (motif)
