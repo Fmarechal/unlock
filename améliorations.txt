@@ -1,0 +1,6 @@
+btn pr dismisser une carte
+cartes + grandes et + claires (meilleure définition)
+avant plan quand on clique sur une carte
+enlever transparence des cartes (on  voir unlcock au travers)
+faire apparaitre les cartes cliquées au milieu du viewport
+changer l'icone oeil pour une icone d'arrière de carte (motif)

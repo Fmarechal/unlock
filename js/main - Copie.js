@@ -1,37 +1,106 @@
 
+let testing = true;
+
 
 $(document).ready(function(){
-	getCards();	
 
+	$('.drawer').drawer({
+  class: {
+    nav: 'drawer-nav',
+    toggle: 'drawer-toggle',
+    overlay: '',
+    open: 'drawer-open',
+    close: 'drawer-close',
+    dropdown: 'drawer-dropdown'
+  },
+  iscroll: {
+    // Configuring the iScroll
+    // https://github.com/cubiq/iscroll#configuring-the-iscroll
+    mouseWheel: true,
+    preventDefault: false
+  },
+  showOverlay: false
 });
 
-/*function setFlipping(){
-	let cards = document.getElementsByClassName("flip-card");
-	for (let i= 0; i<cards.length; i++){
-		let elt = cards[i]
-		elt.addEventListener('click', function(){
-			if(elt.children[0].classList.contains('clicked')){
-				elt.children[0].classList.remove('clicked');
-			}
-			else{
-				elt.children[0].classList.add("clicked");
-			}
-		})
-	}
-}*/
+	$('.drawer').drawer('open');
+	getCards();	
+	$('.drawer').on('drawer.opened', function(){
+		$(".playground").addClass('lowered');
+		console.log("open");
+	});
+	$('.drawer').on('drawer.closed', function(){
+		$(".playground").removeClass('lowered');
+	});
+
+
+	window.setTimeout(function() {
+  	alert("Hello toi :-) \n		\n 		Petit mode d'emploi rapide :\n		Pour amener une carte sur la table de jeu, clique dessus.\n\n		Ensuite, passe ta souris sur le dessus de la carte et tu verras 3 icônes :\n		\n		- mettre la carte en paysage\n		- retourner la carte\n		- agrandir la carte\n		\n		J'arrive un peu plus tard 😉")
+  }, 3000);
+	
+
+/*	$(".scene").droppable({
+    tolerance: "intersect",
+    accept: ".flip-card",
+    activeClass: "ui-state-default",
+    hoverClass: "ui-state-hover",
+    drop: function(event, ui) {
+        $(".playground").append($(ui.draggable));
+    }
+});*/
+/* 	$(".playground").droppable({
+    tolerance: "intersect",
+    accept: ".flip-card",
+    activeClass: "ui-state-default",
+    hoverClass: "ui-state-hover",
+    drop: function(event, ui) {
+
+        if($(ui.draggable.dragged) != true){
+        	$(this).prepend($(ui.draggable));  
+        	$(ui.draggable).draggable('destroy');
+        }
+        	console.log("meerde");
+        $(ui.draggable).dragged = true;
+        $(ui.draggable).draggable();
+
+   	let pos = ui.position;
+    	console.log(pos);
+    	ui.draggable.css('position', 'absolute');
+    	ui.draggable.css('top', 'pos.top');
+    	ui.draggable.css('left', 'pos.left');*/
+        /*ui.draggable.draggable('destroy');
+        ui.draggable.draggable();
+    }
+
+});*/
+   
+
+});
 
 function showRotateButton(elt){ // @TODO
 	let btn = elt.children[0].getElementsByClassName("rotate-button");
 
 }
 
-/*<img src="../unlock/img/icons8-rotate-64.png" class="rotate-button">
-*/
+function putCardOnPlayground(elt){
+	if(elt.makeDraggable != false){
+		$('.playground').prepend(elt);
+		jQuery(elt).draggable();
+		jQuery(elt).css('margin', '20px');
+	}
+	elt.makeDraggable = false;
+}
+
 function displayCards(cardObjectsArray){
 	for (let i = 0; i<cardObjectsArray.length; i++){
+		if(testing){
 		$('.scene').prepend(`
-			<div class='flip-card cardNr${i}'>
-				<img src='../unlock/img/icons8-rotate-64.png' class='rotate-button'>
+			<div class='flip-card cardNr${i}' onclick='putCardOnPlayground(this)'>
+				<div class='button-container'>
+					<img src='img/icons8-rotate-64.png' class='card-icon rotate-button'>
+					<img src='img/eye.png' class='card-icon eye-button'>
+					<img src='img/magnifier.png' class='card-icon magnify-button'>
+				</div>
+
 				<div class='flip-card-inner'>
 					<div class='flip-card-back cardBack${i}'>	
 					<img>				
@@ -41,25 +110,52 @@ function displayCards(cardObjectsArray){
 					</div>
 				</div>
 			</div>`);
-		$('.flip-card').draggable();
+		}
+		else{
+		$('.scene').prepend(`
+			<div class='flip-card cardNr${i}' onclick='putCardOnPlayground(this)'>
+				<div class='button-container'>
+					<img src='../unlock/img/icons8-rotate-64.png' class='card-icon rotate-button'>
+					<img src='../unlock/img/eye.png' class='card-icon eye-button'>
+					<img src='../unlock/img/magnifier.png' class='card-icon magnify-button'>
+				</div>
+
+				<div class='flip-card-inner'>
+					<div class='flip-card-back cardBack${i}'>	
+					<img>				
+					</div>
+					<div class='flip-card-front cardFront${i}'>
+					<img>
+					</div>
+				</div>
+			</div>`);
+		}
+
+		/*$(".flip-card").draggable();*/
+
 		let c = document.getElementsByClassName("flip-card-inner");	
 		for (let i = 0; i < c.length; i++){
 			c[i].classList.add('clicked');
 		}	
 		window.setTimeout(function(){
-			$('.flip-card').on('mouseenter', function(){
-				$(this).children('img').css('display', 'block');
+			$('.button-container').on('mouseover', function(){
+				$(this).css('opacity', '1');
 			});
-			$('.flip-card').on('mouseout', function(){
-				$(this).children('img').css('display', 'none');
+			$('.button-container').on('mouseout', function(){
+				$(this).css('opacity', '0');				
 			});
 /*				$('.flip-card').click(function(){
 					$(this).find('.flip-card-inner').toggleClass('clicked');
 				});*/
-				$('.rotate-button').click(function(){
-					$(this).siblings(".flip-card-inner").toggleClass('clicked');
+				$('.eye-button').click(function(){
+					$(this).parent().siblings(".flip-card-inner").toggleClass('clicked');
 				});
-
+				$('.rotate-button').click(function(){
+					$(this).parent().siblings(".flip-card-inner").toggleClass('rotated');
+				});
+				$('.magnify-button').click(function(){
+					$(this).parent().parent().toggleClass('zoomed');
+				});
 			});
 		let backImg = $(`.cardBack${i} img`);
 		backImg.load(cardObjectsArray[i].pile, function(){
@@ -78,12 +174,6 @@ function displayCards(cardObjectsArray){
 		for (let i = 0; i < c.length; i++){c[i].classList.add('clicked');}*/
 	}
 
-}
-
-// montrer les boutons FLIP et ROTATE quand on hover sur la carte (onmouseover dans le HTML)
-function showButtons(elt){
-	elt.
-	console.log("hover" + elt);
 }
 
 // sans doute à retirer
