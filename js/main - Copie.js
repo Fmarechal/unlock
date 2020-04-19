@@ -3,8 +3,6 @@
 $(document).ready(function(){
 	getCards();	
 
-
-
 });
 
 function setFlipping(){
@@ -22,42 +20,59 @@ function setFlipping(){
 	}
 }
 
-function showRotateButton(elt){
+function showRotateButton(elt){ // @TODO
 	let btn = elt.children[0].getElementsByClassName("rotate-button");
-
 
 }
 
+/*<img src="../unlock/img/icons8-rotate-64.png" class="rotate-button">
+*/
 function displayCards(cardObjectsArray){
 	for (let i = 0; i<cardObjectsArray.length; i++){
 		$('.scene').prepend(`
-			<div class='flip-card cardNr${i}' onmouseover=''>
+			<div class='flip-card cardNr${i}' onclick=''>
 				<div class='flip-card-inner'>
 					<img src="../unlock/img/icons8-rotate-64.png" class="rotate-button">
-					<div class='flip-card-back cardBack${i}'>					
+					<div class='flip-card-back cardBack${i}'>	
+					<img>				
 					</div>
 					<div class='flip-card-front cardFront${i}'>
-					<img src="../unlock/img/icons8-rotate-64.png" class="rotate-button">
+					<img>
 					</div>
 				</div>
 			</div>`);
-		$(`.cardBack${i} img`).attr("src", `${cardObjectsArray[i].pile}`);
-		$(`.cardFront${i} img`).attr("src", `${cardObjectsArray[i].face}`);
 		$('.flip-card').draggable();
+		$('.flip-card').click(function(){
+			$(this).find('.flip-card-inner').toggleClass('clicked');
+		});
+		let backImg = $(`.cardBack${i} img`);
+		backImg.load(cardObjectsArray[i].pile, function(){
+			let containerWidth = $(`.cardBack${i} img`).width();
+			let containerHeight = $(`.cardBack${i} img`).height();
+			$('.flip-card').css('width', `${containerWidth}px`);
+			$('.flip-card').css('height', `${containerHeight}px`);	
+			console.log("theory : " + containerHeight + " , " + containerWidth + " for id" + i);
+			console.log("actually : " + $('.flip-card').css('height') + " , " + $('.flip-card').css('width') + " for id" + i);
+		}).attr("src", `${cardObjectsArray[i].pile}`);
+
+		/*$(`.cardBack${i} img`).attr("src", `${cardObjectsArray[i].pile}`);*/
+		$(`.cardFront${i} img`).attr("src", `${cardObjectsArray[i].face}`);
+
+		let c = document.getElementsByClassName("flip-card-inner");
+		for (let i = 0; i < c.length; i++){c[i].classList.add('clicked');}
 	}
 }
 
-$('.flip-card').click(function(){
-	console.log("héhé");
-	if($(this).find(".flip-card-inside").hasClass('clicked')){
-		$(this).find(".flip-card-inside").removeClass('clicked');
-		/*$(this).find(".flip-card-inside").addClass('unclicked');*/
+function setClickedClass(elt){
+	let innerCard = elt.children[0];
+	console.log(innerCard);
+	if (innerCard.classList.contains('clicked')){
+		innerCard.classList.remove('clicked');
 	}
 	else{
-		/*$(this).find(".flip-card-inside").removeClass('unclicked');*/
-		$(this).find(".flip-card-inside").addClass('clicked');
+		innerCard.classList.add('clicked');
 	}
-});
+}
 
 function getCards(){	
 	// les cartes impaires sont les faces
