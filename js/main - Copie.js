@@ -5,7 +5,7 @@ $(document).ready(function(){
 
 });
 
-function setFlipping(){
+/*function setFlipping(){
 	let cards = document.getElementsByClassName("flip-card");
 	for (let i= 0; i<cards.length; i++){
 		let elt = cards[i]
@@ -18,7 +18,7 @@ function setFlipping(){
 			}
 		})
 	}
-}
+}*/
 
 function showRotateButton(elt){ // @TODO
 	let btn = elt.children[0].getElementsByClassName("rotate-button");
@@ -30,9 +30,9 @@ function showRotateButton(elt){ // @TODO
 function displayCards(cardObjectsArray){
 	for (let i = 0; i<cardObjectsArray.length; i++){
 		$('.scene').prepend(`
-			<div class='flip-card cardNr${i}' onclick=''>
+			<div class='flip-card cardNr${i}'>
+				<img src='../unlock/img/icons8-rotate-64.png' class='rotate-button'>
 				<div class='flip-card-inner'>
-					<img src="../unlock/img/icons8-rotate-64.png" class="rotate-button">
 					<div class='flip-card-back cardBack${i}'>	
 					<img>				
 					</div>
@@ -42,29 +42,54 @@ function displayCards(cardObjectsArray){
 				</div>
 			</div>`);
 		$('.flip-card').draggable();
-		$('.flip-card').click(function(){
-			$(this).find('.flip-card-inner').toggleClass('clicked');
-		});
+		let c = document.getElementsByClassName("flip-card-inner");	
+		for (let i = 0; i < c.length; i++){
+			c[i].classList.add('clicked');
+		}	
+		window.setTimeout(function(){
+			$('.flip-card').on('mouseenter', function(){
+				$(this).children('img').css('display', 'block');
+			});
+			$('.flip-card').on('mouseout', function(){
+				$(this).children('img').css('display', 'none');
+			});
+/*				$('.flip-card').click(function(){
+					$(this).find('.flip-card-inner').toggleClass('clicked');
+				});*/
+				$('.rotate-button').click(function(){
+					$(this).siblings(".flip-card-inner").toggleClass('clicked');
+				});
+
+			});
 		let backImg = $(`.cardBack${i} img`);
 		backImg.load(cardObjectsArray[i].pile, function(){
 			let containerWidth = $(`.cardBack${i} img`).width();
 			let containerHeight = $(`.cardBack${i} img`).height();
 			$('.flip-card').css('width', `${containerWidth}px`);
 			$('.flip-card').css('height', `${containerHeight}px`);	
-			console.log("theory : " + containerHeight + " , " + containerWidth + " for id" + i);
-			console.log("actually : " + $('.flip-card').css('height') + " , " + $('.flip-card').css('width') + " for id" + i);
+			//console.log("theory : " + containerHeight + " , " + containerWidth + " for id" + i);
+			//console.log("actually : " + $('.flip-card').css('height') + " , " + $('.flip-card').css('width') + " for id" + i);
 		}).attr("src", `${cardObjectsArray[i].pile}`);
 
 		/*$(`.cardBack${i} img`).attr("src", `${cardObjectsArray[i].pile}`);*/
 		$(`.cardFront${i} img`).attr("src", `${cardObjectsArray[i].face}`);
 
-		let c = document.getElementsByClassName("flip-card-inner");
-		for (let i = 0; i < c.length; i++){c[i].classList.add('clicked');}
+		/*let c = document.getElementsByClassName("flip-card-inner");
+		for (let i = 0; i < c.length; i++){c[i].classList.add('clicked');}*/
 	}
+
 }
 
+// montrer les boutons FLIP et ROTATE quand on hover sur la carte (onmouseover dans le HTML)
+function showButtons(elt){
+	elt.
+	console.log("hover" + elt);
+}
+
+// sans doute à retirer
 function setClickedClass(elt){
-	let innerCard = elt.children[0];
+	let card = elt.children[0];
+
 	console.log(innerCard);
 	if (innerCard.classList.contains('clicked')){
 		innerCard.classList.remove('clicked');

@@ -20,7 +20,9 @@
 /*  pointer-events: none;*/
 }
 
-.flip-card:hover { opacity: 0.7; }
+.flip-card:hover { 
+  opacity: 0.7; 
+}
 
 .flip-card-inner {
   position: relative;
@@ -45,16 +47,15 @@
 
 .rotate-button {
   display:none;
-  position: absolute;
+  position:absolute;
+  top: 20px;
+  right: 17px;
   z-index: 9;
 }
 
-.rotate-button:hover {
+/*.rotate-button:hover {
   display: block;
-  top: 10px;
-  right: 10px;
-  z-index: 9;
-}
+}*/
 
 
 
@@ -67,7 +68,7 @@
 }
 
 .flip-card-front {
-  background-color: #bbb;
+  background-color: black;
   color: black;
 }
 
