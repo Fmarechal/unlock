@@ -1,6 +1,8 @@
 
 let testing = true;
 
+let selected = null;
+
 
 $(document).ready(function(){
 
@@ -82,16 +84,42 @@ function showRotateButton(elt){ // @TODO
 }
 
 // elt = .flip-card
+// jelt = elt mais en jQuery
 function putCardOnPlayground(elt){
-	if(elt.makeDraggable != false){
+	if(elt.makeDraggable !== false){
 		$('.playground').prepend(elt);		
 		jelt = jQuery(elt)
 		jelt.children('.button-container').addClass("buttons-visible");
-		jelt.draggable();
-		jelt.css('margin', '20px');
-/*		jelt.css('height', '20px');
-		jelt.css('width', '20px');*/
-		jelt.addClass('zoomed');
+		jelt.draggable({
+			create: function(event, ui){
+				jelt.css('margin', '20px');
+				jelt.addClass('zoomed');
+				jelt.css('position', 'absolute');
+			},
+			start: function(event, ui){
+				//console.log("START top: " + ui.position.top + ", left: " + ui.position.left);
+			},
+			drag: function(event, ui){
+				//console.log("DRAG top: " + ui.position.top + ", left: " + ui.position.left);
+
+
+
+				// Cette fonction va mettre la carte actuellement draggée à l'avant-plan (z-index = 1) et la carte précédemment draggée à l'arrière-plan (z-index : 0)
+				// 'selected' est une variable globale qui passe de l'une à l'autre.
+				// 'selected' est un .flip-card en jQuery
+
+				if(selected !== null){ // on checke qu'on n'est pas dans le cas du premier drag
+					selected.css('z-index', 0);
+				}
+				selected = jQuery(event.target);
+				//selected = jelt;
+				selected.css('z-index', 1);
+
+				var classList = elt.className.split(/\s+/);
+  				console.log("elt nr" + classList[1] + " with z-index of " + jelt.css('z-index'));
+			}
+		});
+
 	}
 	elt.makeDraggable = false;
 }
@@ -155,10 +183,18 @@ function displayCards(cardObjectsArray){
 					$(this).find('.flip-card-inner').toggleClass('clicked');
 				});*/
 				$('.eye-button').click(function(){
+					if($(this).parent().canRotate !== true){ /*@TODO: use properties https://www.w3schools.com/jquery/html_prop.asp*/
+						$(this).parent().canRotate = true;
+					}
+					else{
+						$(this).parent().canRotate = false;
+					}
 					$(this).parent().siblings(".flip-card-inner").toggleClass('clicked');
 				});
 				$('.rotate-button').click(function(){
-					$(this).parent().siblings(".flip-card-inner").toggleClass('rotated');
+					if($(this).parent().canRotate !== true){ /*@TODO*/
+						$(this).parent().siblings(".flip-card-inner").toggleClass('rotated');
+				}
 				});
 				$('.magnify-button').click(function(){
 					$(this).parent().parent().toggleClass('zoomed-max');
@@ -170,7 +206,8 @@ function displayCards(cardObjectsArray){
 					let t = $(this).parent().parent()// t = flip-card
 					$('.scene').prepend(t);					
 					t.draggable('destroy');
-					t.removeClass('zoomed');					
+					t.removeClass('zoomed');
+					jelt.css('position', 'relative');					
 					t.css('margin', '0');
 				});
 			});

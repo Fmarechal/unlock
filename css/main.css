@@ -125,7 +125,6 @@ audio {
 }
 
 .button-container {
-
   display:none;
   align-items: center;
   flex-wrap: nowrap;
