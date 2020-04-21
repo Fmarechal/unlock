@@ -140,6 +140,7 @@ audio {
 
 .button-container.buttons-visible{
   display: flex;
+/*  max-width: 100%;*/
 }
 
 .flip-card-front, .flip-card-back {
@@ -162,13 +163,14 @@ audio {
 }
 
 .playground{
+  overflow: auto;
 background: linear-gradient(147deg, rgba(2,0,36,1) 0%, rgba(121,69,9,0.49653364763874297) 73%, rgba(0,212,255,1) 100%);  background-size: cover;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  overflow: auto;
+  overflow: hidden;
   z-index: -1;
   padding-top: 167px;
 }
@@ -197,11 +199,11 @@ background: linear-gradient(147deg, rgba(2,0,36,1) 0%, rgba(121,69,9,0.496533647
 
 .cardCont
 {
-  width:125px;
+/*  width:125px;
   height:200px;
   float:left;
   margin:20px;
-  position:relative;
+  position:relative;*/
   /*border:solid 2px #fff;*/
 }
 .cardFront, .cardBack

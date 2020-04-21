@@ -1,6 +1,4 @@
 
-let testing = true;
-
 let selected = null;
 
 
@@ -32,49 +30,7 @@ $(document).ready(function(){
 	});
 	$('.drawer').on('drawer.closed', function(){
 		$(".playground").removeClass('lowered');
-	});
-
-
-	/*window.setTimeout(function() {
-  	alert("Hello toi :-) \n		\n 		Petit mode d'emploi rapide :\n		Pour amener une carte sur la table de jeu, clique dessus.\n\n		Ensuite, passe ta souris sur le dessus de la carte et tu verras 3 icônes :\n		\n		- mettre la carte en paysage\n		- retourner la carte\n		- agrandir la carte\n		\n		J'arrive un peu plus tard 😉")
-  }, 3000);*/
-	
-
-/*	$(".scene").droppable({
-    tolerance: "intersect",
-    accept: ".flip-card",
-    activeClass: "ui-state-default",
-    hoverClass: "ui-state-hover",
-    drop: function(event, ui) {
-        $(".playground").append($(ui.draggable));
-    }
-});*/
-/* 	$(".playground").droppable({
-    tolerance: "intersect",
-    accept: ".flip-card",
-    activeClass: "ui-state-default",
-    hoverClass: "ui-state-hover",
-    drop: function(event, ui) {
-
-        if($(ui.draggable.dragged) != true){
-        	$(this).prepend($(ui.draggable));  
-        	$(ui.draggable).draggable('destroy');
-        }
-        	console.log("meerde");
-        $(ui.draggable).dragged = true;
-        $(ui.draggable).draggable();
-
-   	let pos = ui.position;
-    	console.log(pos);
-    	ui.draggable.css('position', 'absolute');
-    	ui.draggable.css('top', 'pos.top');
-    	ui.draggable.css('left', 'pos.left');*/
-        /*ui.draggable.draggable('destroy');
-        ui.draggable.draggable();
-    }
-
-});*/
-   
+	});  
 
 });
 
@@ -86,24 +42,20 @@ function showRotateButton(elt){ // @TODO
 // elt = .flip-card
 // jelt = elt mais en jQuery
 function putCardOnPlayground(elt){
-	if(elt.makeDraggable !== false){
-		$('.playground').prepend(elt);		
-		jelt = jQuery(elt)
-		jelt.children('.button-container').addClass("buttons-visible");
-		jelt.draggable({
+	jelt = jQuery(elt)
+	if(jelt.prop('makeDraggable') !== true){ return }
+
+	$('.playground').prepend(elt);				
+
+	jelt.children('.button-container').addClass("buttons-visible");
+	jelt.draggable(
+		{
 			create: function(event, ui){
 				jelt.css('margin', '20px');
 				jelt.addClass('zoomed');
-				jelt.css('position', 'absolute');
-			},
-			start: function(event, ui){
-				//console.log("START top: " + ui.position.top + ", left: " + ui.position.left);
+				jelt.css('position', 'relative');
 			},
 			drag: function(event, ui){
-				//console.log("DRAG top: " + ui.position.top + ", left: " + ui.position.left);
-
-
-
 				// Cette fonction va mettre la carte actuellement draggée à l'avant-plan (z-index = 1) et la carte précédemment draggée à l'arrière-plan (z-index : 0)
 				// 'selected' est une variable globale qui passe de l'une à l'autre.
 				// 'selected' est un .flip-card en jQuery
@@ -116,17 +68,15 @@ function putCardOnPlayground(elt){
 				selected.css('z-index', 1);
 
 				var classList = elt.className.split(/\s+/);
-  				console.log("elt nr" + classList[1] + " with z-index of " + jelt.css('z-index'));
+  				//console.log("elt nr" + classList[1] + " with z-index of " + jelt.css('z-index'));
 			}
 		});
-
-	}
-	elt.makeDraggable = false;
+	jelt.prop('makeDraggable', false);	
 }
 
 function displayCards(cardObjectsArray){
 	for (let i = 0; i<cardObjectsArray.length; i++){
-		if(testing){
+		
 		$('.scene').prepend(`
 			<div class='flip-card cardNr${i}' onclick='putCardOnPlayground(this)'>
 				<div class='button-container'>
@@ -143,30 +93,8 @@ function displayCards(cardObjectsArray){
 					<img>
 					</div>
 				</div>
-			</div>`);
-		}
-		else{
-		$('.scene').prepend(`
-			<div class='flip-card cardNr${i}' onclick='putCardOnPlayground(this)'>
-				<div class='button-container'>
-					<img src='../unlock/img/icons8-rotate-64.png' class='card-icon rotate-button'>
-					<img src='../unlock/img/eye.png' class='card-icon eye-button'>
-					<img src='../unlock/img/magnifier.png' class='card-icon magnify-button'>
-				</div>
-
-				<div class='flip-card-inner'>
-					<div class='flip-card-back cardBack${i}'>	
-					<img>				
-					</div>
-					<div class='flip-card-front cardFront${i}'>
-					<img>
-					</div>
-				</div>
-			</div>`);
-		}
-
-		/*$(".flip-card").draggable();*/
-
+			</div>`);		
+		$(`.cardNr${i}`).prop('makeDraggable', true);
 		let c = document.getElementsByClassName("flip-card-inner");	
 		for (let i = 0; i < c.length; i++){
 			c[i].classList.add('clicked');
@@ -179,9 +107,6 @@ function displayCards(cardObjectsArray){
 			$('.button-container').on('mouseout', function(){
 				$(this).css('opacity', '0');				
 			});
-/*				$('.flip-card').click(function(){
-					$(this).find('.flip-card-inner').toggleClass('clicked');
-				});*/
 				$('.eye-button').click(function(){
 					if($(this).parent().canRotate !== true){ /*@TODO: use properties https://www.w3schools.com/jquery/html_prop.asp*/
 						$(this).parent().canRotate = true;
@@ -199,15 +124,16 @@ function displayCards(cardObjectsArray){
 				$('.magnify-button').click(function(){
 					$(this).parent().parent().toggleClass('zoomed-max');
 				});
-				$('.bin').click(function(){
-					$(this).parent().removeClass('buttons-visible');
-					$(this).parent().makeDraggable = null; /*@TODO : est censé permettre la fonction putOnPlayground mais ne change rien
-					*/
-					let t = $(this).parent().parent()// t = flip-card
+				$('.bin').click(function(event){
+					console.log("event target : " + event.target + " with nr " + event.target.parentElement.parentElement.classList[1]);
+					//let t = $(this).parent().parent();// t = flip-card
+					let t = jQuery(event.target).parent().parent();// t = flip-card
 					$('.scene').prepend(t);					
-					t.draggable('destroy');
-					t.removeClass('zoomed');
-					jelt.css('position', 'relative');					
+					$(this).parent().removeClass('buttons-visible');
+					$(this).parent().parent().prop('makeDraggable', true);
+					
+					t.draggable('disable');
+					t.removeClass('zoomed');					
 					t.css('margin', '0');
 				});
 			});
@@ -224,7 +150,7 @@ function displayCards(cardObjectsArray){
 		/*$(`.cardBack${i} img`).attr("src", `${cardObjectsArray[i].pile}`);*/
 		$(`.cardFront${i} img`).attr("src", `${cardObjectsArray[i].face}`);
 
-		$('flip-card').resizable();
+		//$('flip-card').resizable();
 
 		/*let c = document.getElementsByClassName("flip-card-inner");
 		for (let i = 0; i < c.length; i++){c[i].classList.add('clicked');}*/

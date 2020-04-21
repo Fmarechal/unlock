@@ -8,10 +8,35 @@ V cartes + grandes
 
 cartes + claires (meilleure définition)
 
-avant plan quand on clique sur une carte
+V avant plan quand on clique sur une carte
 
 V enlever transparence des cartes (on  voir unlcock au travers)
 
 faire apparaitre les cartes cliquées au milieu du viewport
 
 V changer l'icone oeil pour une icone d'arrière de carte (motif)
+
+- supprimer tous les boutons sauf le BIN
+
+- les cartes apparaissent sur le playground PUIS se retournent automatiquement
+  -- les cartes en paysage se retournent déjà en paysage sur le drawer (utiliser le petit bug de rotation tel quel)
+
+- remise dans le drawer : destruction de la carte sur le playground puis réutilisation de la fonction initiale AVEC un paramètre qui va griser la carte
+
+- clic sur la carte dans le playground => animation de zoom où elle prend tout l'écran (lightbox) , encore un clic => elle revient à la taille initiale
+
+taille initiale des cartes : trouver la bonne taille qui fonctionne sur tous les écrans
+
+- empêcher le playground de scroller
+
+- le drawer remonte tout seul après un certain temps après le dernier clic sur une des cartes dedans
+
+- animation de POP des cartes qui zooment (avec effet ressort sur l'agrandissement)
+
+- animation de retour sur le drawer
+
+
+
+- le drawer remonte tout seul après un clic sur le playground
+
+- utiliser la scroll wheel pour scroll horizontale sur le playground
